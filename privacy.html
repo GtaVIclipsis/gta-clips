@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — GTA Clip Uploader</title>
+  <style>
+    :root { --bg: #0f1117; --card: #181b24; --border: #2a2f3d; --text: #eef1f7; --muted: #9aa3b2; --accent: #f4d35e; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 48px 20px; }
+    nav { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 36px; font-size: 0.95rem; }
+    nav a { color: var(--muted); text-decoration: none; }
+    nav a:hover, nav a.active { color: var(--accent); }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
+    h1 { font-size: 1.9rem; margin: 0 0 6px; }
+    .meta { color: var(--muted); font-size: 0.9rem; margin: 0 0 24px; }
+    h2 { font-size: 1.1rem; color: var(--accent); margin: 22px 0 8px; }
+    p, li { color: #d6dce8; font-size: 0.96rem; }
+    ul { padding-left: 20px; }
+    footer { margin-top: 28px; color: var(--muted); font-size: 0.88rem; }
+    footer a { color: var(--text); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html" class="active">Privacy Policy</a>
+      <a href="callback.html">OAuth Callback</a>
+    </nav>
+
+    <div class="panel">
+      <h1>Privacy Policy</h1>
+      <p class="meta">Effective Date: November 18, 2026 &mdash; GTA Clip Uploader</p>
+
+      <h2>1. Local-Only Data Storage</h2>
+      <p>
+        GTA Clip Uploader is an internal single-creator tool. All authentication tokens, video files, and upload logs are stored strictly locally on the creator's own computer solely to upload the creator's own videos.
+      </p>
+
+      <h2>2. Data We Process</h2>
+      <ul>
+        <li><strong>OAuth Tokens:</strong> Access and refresh tokens issued by TikTok (`user.info.basic`, `video.upload`, `video.publish`) and YouTube are saved locally to authenticate API upload requests on the creator's behalf.</li>
+        <li><strong>Video &amp; Metadata Files:</strong> Rendered MP4 clips, captions, and upload IDs are stored locally to prevent duplicate uploads.</li>
+      </ul>
+
+      <h2>3. No Sharing, Selling, or Third-Party Tracking</h2>
+      <p>
+        Data is never shared with, sold to, or transferred to any third parties, advertisers, or external analytics providers. Communication occurs strictly with the official TikTok and YouTube API endpoints required for video uploading. This website uses no tracking cookies or external trackers.
+      </p>
+
+      <h2>4. Data Deletion &amp; Access Revocation</h2>
+      <p>
+        You can delete all stored data at any time by removing the local token and history files on your computer and revoking app permissions in your TikTok or Google account settings.
+      </p>
+    </div>
+
+    <footer>
+      <a href="index.html">&larr; Back to Overview</a> &middot; <a href="terms.html">Terms of Service</a>
+    </footer>
+  </div>
+</body>
+</html>
