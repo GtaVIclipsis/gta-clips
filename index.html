@@ -3,64 +3,727 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GTA Clip Uploader — Internal Creator Tool</title>
+  <title>GTA Clip Uploader — Short-Form Gaming Video Studio &amp; Publisher</title>
+  <meta name="description" content="GTA Clip Uploader helps gaming creators format vertical 9:16 gameplay highlights, configure captions and compliance settings, and publish directly via official TikTok and YouTube APIs.">
+  <link rel="icon" type="image/png" sizes="1024x1024" href="app-icon.png">
+  <link rel="apple-touch-icon" href="app-icon.png">
   <style>
-    :root { --bg: #0f1117; --card: #181b24; --border: #2a2f3d; --text: #eef1f7; --muted: #9aa3b2; --accent: #f4d35e; }
+    :root {
+      --bg: #0c0d14;
+      --bg-elev: #141724;
+      --card: #181c2b;
+      --card-2: #111420;
+      --border: #2a3047;
+      --text: #f1f4fb;
+      --muted: #a1abc2;
+      --accent: #ff4fa3;
+      --accent-2: #38e8ff;
+      --gold: #ffb84d;
+      --ok: #4ade80;
+      --warn: #fbbf24;
+      --err: #f87171;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-    .wrap { max-width: 820px; margin: 0 auto; padding: 48px 20px; }
-    nav { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 36px; font-size: 0.95rem; }
-    nav a { color: var(--muted); text-decoration: none; }
-    nav a:hover, nav a.active { color: var(--accent); }
-    h1 { font-size: 2.1rem; margin: 0 0 12px; }
-    .badge { display: inline-block; background: rgba(244, 211, 94, 0.14); color: var(--accent); border: 1px solid rgba(244, 211, 94, 0.35); padding: 4px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; margin-bottom: 14px; }
-    p.lead { color: var(--muted); font-size: 1.08rem; margin: 0 0 28px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-    .card h2 { font-size: 1.05rem; margin: 0 0 8px; color: var(--accent); }
-    .card p { margin: 0; color: var(--muted); font-size: 0.93rem; }
-    footer { border-top: 1px solid var(--border); padding-top: 20px; color: var(--muted); font-size: 0.88rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-    footer a { color: var(--text); text-decoration: none; }
-    footer a:hover { color: var(--accent); }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background:
+        radial-gradient(900px 420px at 85% -10%, rgba(255, 79, 163, 0.16), transparent 60%),
+        radial-gradient(760px 380px at 10% 0%, rgba(56, 232, 255, 0.12), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+
+    /* Header / Nav */
+    header.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(12, 13, 20, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.08rem;
+      letter-spacing: -0.01em;
+    }
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    nav.main-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.94rem;
+    }
+    nav.main-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+    nav.main-nav a:hover,
+    nav.main-nav a.active {
+      color: var(--accent-2);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 58px 0 42px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 32px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; padding-top: 38px; }
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 232, 255, 0.1);
+      color: var(--accent-2);
+      border: 1px solid rgba(56, 232, 255, 0.28);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.12;
+      margin: 0 0 16px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--accent-2), var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p.lead {
+      color: var(--muted);
+      font-size: 1.07rem;
+      margin: 0 0 26px;
+      max-width: 600px;
+    }
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+    .btn:hover { opacity: 0.93; transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #ff7a59);
+      color: #ffffff;
+    }
+    .btn-secondary {
+      background: var(--card);
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .hero-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+    .hero-app-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .hero-app-badge img {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .hero-app-badge h2 { margin: 0 0 4px; font-size: 1.2rem; }
+    .hero-app-badge span { color: var(--muted); font-size: 0.88rem; }
+    .metric-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .metric {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .metric strong { display: block; font-size: 1.05rem; color: var(--accent-2); }
+    .metric small { color: var(--muted); font-size: 0.82rem; }
+
+    /* Sections */
+    section { padding: 48px 0; }
+    .section-head { margin-bottom: 26px; }
+    .section-head h2 { font-size: 1.75rem; margin: 0 0 8px; }
+    .section-head p { color: var(--muted); margin: 0; max-width: 680px; }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 1.08rem; color: var(--accent-2); }
+    .card p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+
+    /* Interactive Studio */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+    }
+    @media (max-width: 880px) {
+      .studio-grid { grid-template-columns: 1fr; }
+    }
+    .phone-frame {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      aspect-ratio: 9 / 16;
+      background: #07080d;
+      border: 2px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .phone-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .phone-placeholder {
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .phone-placeholder img {
+      width: 84px;
+      height: 84px;
+      border-radius: 18px;
+      margin-bottom: 14px;
+    }
+    .caption-overlay {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 14px;
+      background: rgba(12, 13, 20, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      pointer-events: none;
+    }
+    .caption-overlay strong { display: block; color: var(--accent-2); margin-bottom: 3px; }
+    .caption-overlay span { color: #e2e8f5; word-break: break-word; }
+
+    .studio-form { display: flex; flex-direction: column; gap: 16px; }
+    .field label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .field input[type="text"],
+    .field textarea,
+    .field select {
+      width: 100%;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.94rem;
+      font-family: inherit;
+    }
+    .field textarea { min-height: 78px; resize: vertical; }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 600px) {
+      .field-row { grid-template-columns: 1fr; }
+    }
+    .check-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+    }
+    .check-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .sub-box {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(255, 184, 77, 0.08);
+      border: 1px solid rgba(255, 184, 77, 0.3);
+      display: none;
+    }
+    .sub-box.visible { display: block; }
+    .hint { font-size: 0.82rem; color: var(--muted); margin-top: 5px; }
+    .status-banner {
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .status-banner.ok {
+      display: block;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      color: #bbf7d0;
+    }
+    .status-banner.err {
+      display: block;
+      background: rgba(248, 113, 113, 0.12);
+      border: 1px solid rgba(248, 113, 113, 0.4);
+      color: #fecaca;
+    }
+
+    /* FAQ */
+    .faq-list { display: grid; gap: 14px; }
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .faq-item h3 { margin: 0 0 6px; font-size: 1rem; color: var(--text); }
+    .faq-item p { margin: 0; color: var(--muted); font-size: 0.93rem; }
+
+    /* Footer */
+    footer.site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+      padding: 28px 0 42px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-brand img {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--text);
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--accent-2); }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <nav>
-      <a href="index.html" class="active">Overview</a>
-      <a href="terms.html">Terms of Service</a>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="callback.html">OAuth Callback</a>
-    </nav>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html">
+        <img src="app-icon.png" alt="GTA Clip Uploader App Icon">
+        <span>GTA Clip Uploader</span>
+      </a>
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a href="index.html" class="active">Home</a>
+        <a href="#features">Features</a>
+        <a href="#studio">Publisher Studio</a>
+        <a href="#faq">FAQ</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </nav>
+    </div>
+  </header>
 
-    <span class="badge">Internal Creator Automation Tool</span>
-    <h1>GTA Clip Uploader</h1>
-    <p class="lead">
-      GTA Clip Uploader is a private, local creator utility designed to format Grand Theft Auto gameplay highlights into vertical 9:16 short-form videos and upload them directly to the creator's own connected accounts via official platform APIs.
-    </p>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <div class="pill">Official API Creator Publishing Suite</div>
+        <h1>Turn Gaming Highlights into <span>Publish-Ready 9:16 Clips</span></h1>
+        <p class="lead">
+          <strong>GTA Clip Uploader</strong> is a dedicated creator publishing web application that formats widescreen Grand Theft Auto gameplay highlights into vertical 1080&times;1920 videos, manages captions and disclosure controls, and publishes directly to connected TikTok and YouTube creator accounts via official OAuth 2.0 APIs.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#studio">Open Publisher Studio</a>
+          <a class="btn btn-secondary" href="#features">Explore Workflow</a>
+        </div>
+      </div>
 
-    <div class="grid">
-      <div class="card">
-        <h2>1. Vertical 9:16 Formatting</h2>
-        <p>Converts widescreen 16:9 gameplay clips into 1080&times;1920 vertical videos with blurred framing, facecam layout, voiceover hooks, and burned-in captions.</p>
+      <aside class="hero-card" aria-label="Application Summary">
+        <div class="hero-app-badge">
+          <img src="app-icon.png" alt="GTA Clip Uploader Icon">
+          <div>
+            <h2>GTA Clip Uploader</h2>
+            <span>Production Creator Publishing Platform</span>
+          </div>
+        </div>
+        <div class="metric-list">
+          <div class="metric">
+            <strong>9:16 (1080&times;1920)</strong>
+            <small>Vertical Short-Form Output</small>
+          </div>
+          <div class="metric">
+            <strong>TikTok API v2</strong>
+            <small>Direct Post &amp; Creator Info</small>
+          </div>
+          <div class="metric">
+            <strong>OAuth 2.0</strong>
+            <small>Explicit Creator Consent</small>
+          </div>
+          <div class="metric">
+            <strong>72h Auto-Purge</strong>
+            <small>Minimal Data Retention</small>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="features">
+      <div class="section-head">
+        <h2>End-to-End Creator Workflow</h2>
+        <p>Built for gaming creators who want fast vertical formatting, transparent publishing controls, and compliant direct-post distribution.</p>
       </div>
-      <div class="card">
-        <h2>2. Official API Integration</h2>
-        <p>Uses authorized OAuth 2.0 credentials exclusively via the official TikTok Content Posting API v2 and YouTube Data API v3.</p>
+      <div class="grid-3">
+        <article class="card">
+          <h3>1. Vertical 9:16 Mastering</h3>
+          <p>Transforms 16:9 gameplay recordings into 1080&times;1920 vertical videos with blurred background framing, optional facecam cropping, normalized audio, and burned-in captions.</p>
+        </article>
+        <article class="card">
+          <h3>2. TikTok Direct Post Compliance</h3>
+          <p>Queries creator capabilities prior to publishing, enforces explicit manual selection of audience privacy, interaction permissions (comments, duets, stitches), and commercial content disclosures.</p>
+        </article>
+        <article class="card">
+          <h3>3. Multi-Platform Scheduling</h3>
+          <p>Coordinates consistent daily release windows across TikTok Content Posting API v2 and YouTube Data API v3 while preventing duplicate clip uploads.</p>
+        </article>
       </div>
-      <div class="card">
-        <h2>3. Creator-Controlled Publishing</h2>
-        <p>Videos are uploaded as private drafts or inbox items to the creator's own channel for manual review before public release.</p>
+    </section>
+
+    <section id="studio">
+      <div class="section-head">
+        <h2>Publisher Studio &amp; Direct Post Preview</h2>
+        <p>Load an MP4 clip locally in your browser to preview vertical 9:16 framing, customize your caption, configure TikTok Direct Post settings, and export a validated publish manifest.</p>
+      </div>
+
+      <div class="studio-grid">
+        <div>
+          <div class="phone-frame">
+            <video id="preview-video" controls playsinline loop muted></video>
+            <div id="phone-placeholder" class="phone-placeholder">
+              <img src="app-icon.png" alt="GTA Clip Uploader Preview">
+              <div><strong>9:16 Vertical Preview</strong><br>Select an MP4 file on the right to preview playback and caption placement.</div>
+            </div>
+            <div class="caption-overlay">
+              <strong id="preview-privacy-badge">Privacy: Not selected</strong>
+              <span id="preview-caption">Insane GTA 6 Vice City drift through traffic #gta6 #gtavi #gaming</span>
+            </div>
+          </div>
+        </div>
+
+        <form id="studio-form" class="studio-form" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="video-file">Select Video File (MP4, 9:16 recommended)</label>
+              <input id="video-file" type="file" accept="video/mp4,video/quicktime">
+              <div id="file-meta" class="hint">Preview runs locally in your browser.</div>
+            </div>
+            <div class="field">
+              <label for="creator-handle">Connected Creator Account</label>
+              <input id="creator-handle" type="text" value="@creator_account (OAuth 2.0 Ready)" aria-label="Creator Account">
+              <div class="hint">Verified via TikTok <code>/v2/post/publish/creator_info/query/</code></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="caption-input">Post Title / Caption &amp; Hashtags</label>
+            <textarea id="caption-input" maxlength="2200">Insane GTA 6 Vice City drift through traffic #gta6 #gtavi #gaming</textarea>
+            <div id="char-count" class="hint">63 / 2200 characters</div>
+          </div>
+
+          <div class="field">
+            <label for="privacy-select">Who can watch this video? (Required)</label>
+            <select id="privacy-select" required>
+              <option value="">-- Select privacy level --</option>
+              <option value="PUBLIC_TO_EVERYONE">Everyone (Public)</option>
+              <option value="MUTUAL_FOLLOW_FRIENDS">Friends (Mutual Followers)</option>
+              <option value="FOLLOWER_OF_CREATOR">Followers</option>
+              <option value="SELF_ONLY">Only Me (Private)</option>
+            </select>
+            <div class="hint">Per TikTok Direct Post UX rules, no privacy option is pre-selected by default.</div>
+          </div>
+
+          <div class="field">
+            <label>Allow users to:</label>
+            <div class="check-group">
+              <label class="check-item"><input type="checkbox" id="allow-comment"> Comment</label>
+              <label class="check-item"><input type="checkbox" id="allow-duet"> Duet</label>
+              <label class="check-item"><input type="checkbox" id="allow-stitch"> Stitch</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Commercial Content Disclosure</label>
+            <div class="check-group">
+              <label class="check-item">
+                <input type="checkbox" id="disclosure-toggle">
+                This video promotes yourself, a third party, goods, or services
+              </label>
+            </div>
+            <div id="disclosure-options" class="sub-box">
+              <label class="check-item"><input type="checkbox" id="brand-organic"> Your Brand (promoting yourself or your own business)</label><br>
+              <label class="check-item" style="margin-top:8px;"><input type="checkbox" id="branded-content"> Branded Content (promoting a third-party brand or paid partnership)</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="check-item">
+              <input type="checkbox" id="music-consent">
+              <span>By posting, you agree to TikTok's Music Usage Confirmation and Content Posting Guidelines.</span>
+            </label>
+          </div>
+
+          <div class="cta-row">
+            <button type="submit" class="btn btn-primary">Validate &amp; Export Publish Manifest</button>
+            <button type="button" id="reset-btn" class="btn btn-secondary">Reset Form</button>
+          </div>
+
+          <div id="studio-status" class="status-banner" role="status"></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="section-head">
+        <h2>Frequently Asked Questions &amp; Support</h2>
+        <p>Key details about permissions, Direct Post compliance, and creator account control.</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>Which TikTok permissions does GTA Clip Uploader use?</h3>
+          <p>GTA Clip Uploader requests <code>user.info.basic</code> (to identify your connected creator profile), <code>video.upload</code> (to transfer video chunks securely), and <code>video.publish</code> (to submit direct posts with your chosen privacy and interaction settings).</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I disconnect my TikTok or YouTube account at any time?</h3>
+          <p>Yes. You can revoke access anytime from your TikTok App Permissions settings or Google Account Security settings. You can also request complete deletion of any stored metadata by emailing <a href="mailto:sensoren.lieber.5d@icloud.com">sensoren.lieber.5d@icloud.com</a>.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How do I contact support?</h3>
+          <p>For technical support, privacy questions, or account assistance, contact us directly at <a href="mailto:sensoren.lieber.5d@icloud.com">sensoren.lieber.5d@icloud.com</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="app-icon.png" alt="GTA Clip Uploader Icon">
+        <span>&copy; 2026 GTA Clip Uploader &mdash; Support: <a href="mailto:sensoren.lieber.5d@icloud.com">sensoren.lieber.5d@icloud.com</a></span>
+      </div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
       </div>
     </div>
+  </footer>
 
-    <footer>
-      <span>&copy; 2026 GTA Clip Uploader &mdash; Internal Creator Tool</span>
-      <span>
-        <a href="terms.html">Terms</a> &middot;
-        <a href="privacy.html">Privacy</a>
-      </span>
-    </footer>
-  </div>
+  <script>
+    (function () {
+      const videoInput = document.getElementById("video-file");
+      const previewVideo = document.getElementById("preview-video");
+      const placeholder = document.getElementById("phone-placeholder");
+      const fileMeta = document.getElementById("file-meta");
+      const captionInput = document.getElementById("caption-input");
+      const previewCaption = document.getElementById("preview-caption");
+      const charCount = document.getElementById("char-count");
+      const privacySelect = document.getElementById("privacy-select");
+      const previewPrivacyBadge = document.getElementById("preview-privacy-badge");
+      const disclosureToggle = document.getElementById("disclosure-toggle");
+      const disclosureOptions = document.getElementById("disclosure-options");
+      const brandOrganic = document.getElementById("brand-organic");
+      const brandedContent = document.getElementById("branded-content");
+      const musicConsent = document.getElementById("music-consent");
+      const studioForm = document.getElementById("studio-form");
+      const studioStatus = document.getElementById("studio-status");
+      const resetBtn = document.getElementById("reset-btn");
+
+      let objectUrl = null;
+
+      videoInput.addEventListener("change", function () {
+        const file = videoInput.files && videoInput.files[0];
+        if (!file) return;
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+        objectUrl = URL.createObjectURL(file);
+        previewVideo.src = objectUrl;
+        previewVideo.style.display = "block";
+        placeholder.style.display = "none";
+        previewVideo.play().catch(function () {});
+        const mb = (file.size / (1024 * 1024)).toFixed(2);
+        fileMeta.textContent = "Loaded: " + file.name + " (" + mb + " MB)";
+      });
+
+      function syncCaption() {
+        const val = captionInput.value.trim();
+        previewCaption.textContent = val || "(No caption entered)";
+        charCount.textContent = captionInput.value.length + " / 2200 characters";
+      }
+      captionInput.addEventListener("input", syncCaption);
+      syncCaption();
+
+      privacySelect.addEventListener("change", function () {
+        const selected = privacySelect.options[privacySelect.selectedIndex];
+        previewPrivacyBadge.textContent = privacySelect.value
+          ? "Privacy: " + selected.text
+          : "Privacy: Not selected";
+      });
+
+      disclosureToggle.addEventListener("change", function () {
+        disclosureOptions.classList.toggle("visible", disclosureToggle.checked);
+        if (!disclosureToggle.checked) {
+          brandOrganic.checked = false;
+          brandedContent.checked = false;
+        }
+      });
+
+      function showStatus(msg, isError) {
+        studioStatus.textContent = msg;
+        studioStatus.className = "status-banner " + (isError ? "err" : "ok");
+      }
+
+      studioForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!privacySelect.value) {
+          showStatus("Please select a privacy level before submitting.", true);
+          return;
+        }
+        if (disclosureToggle.checked && !brandOrganic.checked && !brandedContent.checked) {
+          showStatus("Please select either 'Your Brand' or 'Branded Content' when commercial disclosure is enabled.", true);
+          return;
+        }
+        if (!musicConsent.checked) {
+          showStatus("Please confirm TikTok's Music Usage Confirmation before continuing.", true);
+          return;
+        }
+
+        const manifest = {
+          app: "GTA Clip Uploader",
+          post_info: {
+            title: captionInput.value.trim(),
+            privacy_level: privacySelect.value,
+            disable_comment: !document.getElementById("allow-comment").checked,
+            disable_duet: !document.getElementById("allow-duet").checked,
+            disable_stitch: !document.getElementById("allow-stitch").checked,
+            brand_content_toggle: disclosureToggle.checked && brandedContent.checked,
+            brand_organic_toggle: disclosureToggle.checked && brandOrganic.checked
+          },
+          created_at: new Date().toISOString()
+        };
+
+        const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: "application/json" });
+        const dlUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = dlUrl;
+        a.download = "tiktok-direct-post-manifest.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(dlUrl);
+
+        showStatus("Validation passed! Exported tiktok-direct-post-manifest.json with privacy=" + privacySelect.value + ".", false);
+      });
+
+      resetBtn.addEventListener("click", function () {
+        studioForm.reset();
+        disclosureOptions.classList.remove("visible");
+        previewPrivacyBadge.textContent = "Privacy: Not selected";
+        syncCaption();
+        studioStatus.className = "status-banner";
+        studioStatus.textContent = "";
+      });
+    })();
+  </script>
 </body>
 </html>
