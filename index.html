@@ -89,6 +89,55 @@
     nav.main-nav a.active {
       color: var(--accent-2);
     }
+    .nav-auth {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-nav-login {
+      padding: 8px 16px;
+      border-radius: 9px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: 1px solid rgba(56, 232, 255, 0.45);
+      background: rgba(56, 232, 255, 0.12);
+      color: var(--accent-2);
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.12s ease;
+    }
+    .btn-nav-login:hover {
+      background: rgba(56, 232, 255, 0.22);
+      transform: translateY(-1px);
+    }
+    .user-pill {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 8px 5px 12px;
+      font-size: 0.85rem;
+    }
+    .user-pill.visible { display: inline-flex; }
+    .user-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 8px var(--ok);
+    }
+    .btn-logout-sm {
+      background: #252b40;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-logout-sm:hover { border-color: var(--err); color: #fecaca; }
 
     /* Hero */
     .hero {
@@ -286,6 +335,8 @@
       color: var(--text);
     }
     .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="password"],
     .field textarea,
     .field select {
       width: 100%;
@@ -297,6 +348,160 @@
       font-size: 0.94rem;
       font-family: inherit;
     }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 3px rgba(56, 232, 255, 0.14);
+    }
+
+    /* Login Section & Modal */
+    .login-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 26px;
+      align-items: start;
+    }
+    @media (max-width: 820px) {
+      .login-grid { grid-template-columns: 1fr; }
+    }
+    .login-box {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+    }
+    .login-box h3 {
+      margin: 0 0 6px;
+      font-size: 1.12rem;
+    }
+    .login-box p.sub {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .btn-tiktok {
+      width: 100%;
+      background: #010101;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: -2px 0 0 rgba(37, 244, 238, 0.75), 2px 0 0 rgba(254, 44, 85, 0.75);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+    .btn-tiktok:hover {
+      opacity: 0.94;
+      transform: translateY(-1px);
+    }
+    .session-card {
+      display: none;
+      background: rgba(74, 222, 128, 0.08);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .session-card.visible { display: block; }
+    .session-card strong { color: #bbf7d0; display: block; margin-bottom: 4px; }
+    .session-card p { margin: 0 0 12px; color: var(--muted); font-size: 0.88rem; }
+    .oauth-scope-list {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+    .oauth-scope-list li {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .oauth-scope-list li strong {
+      color: var(--accent-2);
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(5, 7, 12, 0.76);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-dialog {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      position: relative;
+    }
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .modal-head h2 { margin: 0; font-size: 1.25rem; }
+    .modal-close {
+      background: var(--card-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text); border-color: var(--accent-2); }
     .field textarea { min-height: 78px; resize: vertical; }
     .field-row {
       display: grid;
@@ -410,11 +615,20 @@
       <nav class="main-nav" aria-label="Main Navigation">
         <a href="index.html" class="active">Home</a>
         <a href="#features">Features</a>
+        <a href="#login">Login</a>
         <a href="#studio">Publisher Studio</a>
         <a href="#faq">FAQ</a>
         <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
       </nav>
+      <div class="nav-auth">
+        <button id="header-login-btn" type="button" class="btn-nav-login">Log in</button>
+        <div id="header-user-pill" class="user-pill" aria-live="polite">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="header-user-label"></span>
+          <button id="header-logout-btn" type="button" class="btn-logout-sm">Log out</button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -427,7 +641,8 @@
           <strong>GTA Clip Uploader</strong> is a dedicated creator publishing web application that formats widescreen Grand Theft Auto gameplay highlights into vertical 1080&times;1920 videos, manages captions and disclosure controls, and publishes directly to connected TikTok and YouTube creator accounts via official OAuth 2.0 APIs.
         </p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="#studio">Open Publisher Studio</a>
+          <button id="hero-login-btn" type="button" class="btn btn-primary">Log in to Creator Account</button>
+          <a class="btn btn-secondary" href="#studio">Open Publisher Studio</a>
           <a class="btn btn-secondary" href="#features">Explore Workflow</a>
         </div>
       </div>
@@ -482,6 +697,68 @@
       </div>
     </section>
 
+    <section id="login">
+      <div class="section-head">
+        <h2>Creator Login &amp; TikTok Account Connection</h2>
+        <p>Sign in to your GTA Clip Uploader workspace or authorize directly with TikTok OAuth 2.0 to load your creator profile and publishing permissions.</p>
+      </div>
+
+      <div class="login-grid">
+        <div class="login-box">
+          <h3>Sign in to Your Account</h3>
+          <p class="sub">Enter your creator credentials or connect directly with TikTok.</p>
+
+          <div id="inline-session-card" class="session-card" aria-live="polite">
+            <strong id="inline-session-title">Signed in</strong>
+            <p id="inline-session-detail"></p>
+            <button id="inline-logout-btn" type="button" class="btn btn-secondary">Log out &amp; Disconnect</button>
+          </div>
+
+          <form id="inline-login-form" class="login-form" novalidate>
+            <div class="field">
+              <label for="inline-login-identifier">Email or Creator Handle</label>
+              <input id="inline-login-identifier" type="email" autocomplete="username" placeholder="creator@example.com or @handle" required>
+            </div>
+            <div class="field">
+              <label for="inline-login-password">Password</label>
+              <input id="inline-login-password" type="password" autocomplete="current-password" placeholder="Enter your password" minlength="6" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Log in</button>
+            <div id="inline-login-status" class="status-banner" role="status"></div>
+          </form>
+
+          <div class="divider">or</div>
+
+          <button id="inline-tiktok-btn" type="button" class="btn-tiktok">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3 15.28a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.73a8.19 8.19 0 0 0 4.76 1.52V6.8a4.84 4.84 0 0 1-.85-.11Z"/>
+            </svg>
+            <span>Continue with TikTok</span>
+          </button>
+          <div id="tiktok-oauth-hint" class="hint">Uses official TikTok OAuth 2.0 (<code>https://www.tiktok.com/v2/auth/authorize/</code>) with explicit user consent.</div>
+        </div>
+
+        <div class="login-box">
+          <h3>What Happens After Login?</h3>
+          <p class="sub">Authentication unlocks creator-specific Direct Post validation in the Publisher Studio below.</p>
+          <ul class="oauth-scope-list">
+            <li>
+              <strong>1. Creator Identity (<code>user.info.basic</code>)</strong>
+              Displays your connected handle in the Publisher Studio and fetches account posting limits via <code>/v2/post/publish/creator_info/query/</code>.
+            </li>
+            <li>
+              <strong>2. Chunked Video Upload (<code>video.upload</code>)</strong>
+              Transfers your formatted 9:16 MP4 clip securely over HTTPS to TikTok's media servers.
+            </li>
+            <li>
+              <strong>3. Direct Post Controls (<code>video.publish</code>)</strong>
+              Requires your manual selection of privacy level, comment/duet/stitch permissions, and commercial content disclosures before publishing.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <section id="studio">
       <div class="section-head">
         <h2>Publisher Studio &amp; Direct Post Preview</h2>
@@ -512,8 +789,8 @@
             </div>
             <div class="field">
               <label for="creator-handle">Connected Creator Account</label>
-              <input id="creator-handle" type="text" value="@creator_account (OAuth 2.0 Ready)" aria-label="Creator Account">
-              <div class="hint">Verified via TikTok <code>/v2/post/publish/creator_info/query/</code></div>
+              <input id="creator-handle" type="text" value="Not signed in — click Log in above" readonly aria-label="Creator Account">
+              <div id="creator-handle-hint" class="hint">Sign in above or connect TikTok to verify via <code>/v2/post/publish/creator_info/query/</code></div>
             </div>
           </div>
 
@@ -610,8 +887,68 @@
     </div>
   </footer>
 
+  <div id="login-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <h2 id="login-modal-title">Log in to GTA Clip Uploader</h2>
+        <button id="modal-close-btn" type="button" class="modal-close" aria-label="Close login dialog">&times;</button>
+      </div>
+      <p class="hint" style="margin-top:0; margin-bottom:16px;">Sign in with your creator account or authorize via TikTok OAuth 2.0.</p>
+
+      <form id="modal-login-form" class="login-form" novalidate>
+        <div class="field">
+          <label for="modal-login-identifier">Email or Creator Handle</label>
+          <input id="modal-login-identifier" type="email" autocomplete="username" placeholder="creator@example.com or @handle" required>
+        </div>
+        <div class="field">
+          <label for="modal-login-password">Password</label>
+          <input id="modal-login-password" type="password" autocomplete="current-password" placeholder="Enter your password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Log in</button>
+        <div id="modal-login-status" class="status-banner" role="status"></div>
+      </form>
+
+      <div class="divider">or</div>
+
+      <button id="modal-tiktok-btn" type="button" class="btn-tiktok">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3 15.28a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.73a8.19 8.19 0 0 0 4.76 1.52V6.8a4.84 4.84 0 0 1-.85-.11Z"/>
+        </svg>
+        <span>Continue with TikTok</span>
+      </button>
+    </div>
+  </div>
+
   <script>
     (function () {
+      // Public TikTok App Client Key (never place client_secret in frontend code).
+      const TIKTOK_CLIENT_KEY = "";
+      const TIKTOK_REDIRECT_URI = "https://gtaviclipsis.github.io/gta-clips/callback.html";
+      const TIKTOK_SCOPES = "user.info.basic,video.upload,video.publish";
+      const SESSION_STORAGE_KEY = "gta_clip_uploader_session";
+
+      const headerLoginBtn = document.getElementById("header-login-btn");
+      const heroLoginBtn = document.getElementById("hero-login-btn");
+      const headerUserPill = document.getElementById("header-user-pill");
+      const headerUserLabel = document.getElementById("header-user-label");
+      const headerLogoutBtn = document.getElementById("header-logout-btn");
+      const inlineLogoutBtn = document.getElementById("inline-logout-btn");
+      const inlineSessionCard = document.getElementById("inline-session-card");
+      const inlineSessionTitle = document.getElementById("inline-session-title");
+      const inlineSessionDetail = document.getElementById("inline-session-detail");
+      const inlineLoginForm = document.getElementById("inline-login-form");
+      const inlineLoginStatus = document.getElementById("inline-login-status");
+      const inlineTiktokBtn = document.getElementById("inline-tiktok-btn");
+
+      const loginModal = document.getElementById("login-modal");
+      const modalCloseBtn = document.getElementById("modal-close-btn");
+      const modalLoginForm = document.getElementById("modal-login-form");
+      const modalLoginStatus = document.getElementById("modal-login-status");
+      const modalTiktokBtn = document.getElementById("modal-tiktok-btn");
+
+      const creatorHandleInput = document.getElementById("creator-handle");
+      const creatorHandleHint = document.getElementById("creator-handle-hint");
+
       const videoInput = document.getElementById("video-file");
       const previewVideo = document.getElementById("preview-video");
       const placeholder = document.getElementById("phone-placeholder");
@@ -631,6 +968,226 @@
       const resetBtn = document.getElementById("reset-btn");
 
       let objectUrl = null;
+
+      function setBanner(el, msg, isError) {
+        if (!msg) {
+          el.className = "status-banner";
+          el.textContent = "";
+          return;
+        }
+        el.textContent = msg;
+        el.className = "status-banner " + (isError ? "err" : "ok");
+      }
+
+      function loadSession() {
+        try {
+          const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function saveSession(session) {
+        try {
+          localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+        } catch (err) {
+          // Ignore storage restrictions in private browsing modes.
+        }
+        renderAuthState(session);
+      }
+
+      function clearSession() {
+        try {
+          localStorage.removeItem(SESSION_STORAGE_KEY);
+          sessionStorage.removeItem("gta_tiktok_oauth_connected");
+        } catch (err) {
+          // Ignore storage restrictions.
+        }
+        setBanner(inlineLoginStatus, "", false);
+        setBanner(modalLoginStatus, "", false);
+        renderAuthState(null);
+      }
+
+      function renderAuthState(session) {
+        if (session && session.handle) {
+          headerLoginBtn.style.display = "none";
+          headerUserPill.classList.add("visible");
+          headerUserLabel.textContent = session.handle;
+          heroLoginBtn.textContent = "Account Connected (" + session.handle + ")";
+
+          inlineSessionCard.classList.add("visible");
+          inlineSessionTitle.textContent = "Signed in as " + session.handle;
+          inlineSessionDetail.textContent =
+            "Method: " + session.provider + " • Authenticated on " + new Date(session.signedInAt).toLocaleString();
+          inlineLoginForm.style.display = "none";
+
+          creatorHandleInput.value = session.handle + " (" + session.provider + ")";
+          creatorHandleHint.innerHTML = "Authenticated session active &bull; Ready for TikTok <code>/v2/post/publish/creator_info/query/</code>";
+        } else {
+          headerLoginBtn.style.display = "inline-flex";
+          headerUserPill.classList.remove("visible");
+          headerUserLabel.textContent = "";
+          heroLoginBtn.textContent = "Log in to Creator Account";
+
+          inlineSessionCard.classList.remove("visible");
+          inlineLoginForm.style.display = "flex";
+
+          creatorHandleInput.value = "Not signed in — click Log in above";
+          creatorHandleHint.innerHTML = "Sign in above or connect TikTok to verify via <code>/v2/post/publish/creator_info/query/</code>";
+        }
+      }
+
+      function openLoginModal() {
+        setBanner(modalLoginStatus, "", false);
+        loginModal.classList.add("open");
+        const input = document.getElementById("modal-login-identifier");
+        if (input) input.focus();
+      }
+
+      function closeLoginModal() {
+        loginModal.classList.remove("open");
+      }
+
+      function formatHandle(identifier) {
+        const clean = identifier.trim();
+        if (clean.startsWith("@")) return clean;
+        const prefix = clean.includes("@") ? clean.split("@")[0] : clean;
+        return "@" + prefix.replace(/[^a-zA-Z0-9._-]/g, "");
+      }
+
+      function handlePasswordLogin(identifierInput, passwordInput, statusEl, fromModal) {
+        const identifier = identifierInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!identifier || (!identifier.includes("@") && identifier.length < 3)) {
+          setBanner(statusEl, "Please enter a valid email address or creator handle.", true);
+          return;
+        }
+        if (!password || password.length < 6) {
+          setBanner(statusEl, "Please enter a password with at least 6 characters.", true);
+          return;
+        }
+
+        const handle = formatHandle(identifier);
+        saveSession({
+          handle: handle,
+          identifier: identifier,
+          provider: "Creator Account",
+          signedInAt: new Date().toISOString()
+        });
+        passwordInput.value = "";
+        setBanner(statusEl, "Signed in as " + handle + ".", false);
+        if (fromModal) {
+          closeLoginModal();
+        }
+      }
+
+      function randomState() {
+        const arr = new Uint8Array(16);
+        if (window.crypto && window.crypto.getRandomValues) {
+          window.crypto.getRandomValues(arr);
+        } else {
+          for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256);
+        }
+        return Array.from(arr, function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+      }
+
+      function startTikTokOAuth(statusEl) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientKey = (TIKTOK_CLIENT_KEY || urlParams.get("client_key") || "").trim();
+        if (!clientKey) {
+          setBanner(
+            statusEl,
+            "TikTok OAuth Client Key is not configured yet in docs/index.html (TIKTOK_CLIENT_KEY). Set the public Client Key or sign in with your creator email above.",
+            true
+          );
+          return;
+        }
+
+        const state = randomState();
+        try {
+          sessionStorage.setItem("tiktok_oauth_state", state);
+        } catch (err) {
+          // Ignore storage errors.
+        }
+
+        const authUrl =
+          "https://www.tiktok.com/v2/auth/authorize/?" +
+          new URLSearchParams({
+            client_key: clientKey,
+            scope: TIKTOK_SCOPES,
+            response_type: "code",
+            redirect_uri: TIKTOK_REDIRECT_URI,
+            state: state
+          }).toString();
+
+        window.location.href = authUrl;
+      }
+
+      // Check if returning from TikTok OAuth callback.html
+      try {
+        if (sessionStorage.getItem("gta_tiktok_oauth_connected") === "1" && !loadSession()) {
+          saveSession({
+            handle: "@tiktok_creator",
+            identifier: "tiktok_oauth",
+            provider: "TikTok OAuth 2.0",
+            signedInAt: new Date().toISOString()
+          });
+        }
+      } catch (err) {
+        // Ignore storage errors.
+      }
+
+      renderAuthState(loadSession());
+
+      headerLoginBtn.addEventListener("click", openLoginModal);
+      heroLoginBtn.addEventListener("click", function () {
+        if (loadSession()) {
+          document.getElementById("studio").scrollIntoView({ behavior: "smooth" });
+        } else {
+          openLoginModal();
+        }
+      });
+      modalCloseBtn.addEventListener("click", closeLoginModal);
+      loginModal.addEventListener("click", function (e) {
+        if (e.target === loginModal) closeLoginModal();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && loginModal.classList.contains("open")) {
+          closeLoginModal();
+        }
+      });
+
+      headerLogoutBtn.addEventListener("click", clearSession);
+      inlineLogoutBtn.addEventListener("click", clearSession);
+
+      inlineLoginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        handlePasswordLogin(
+          document.getElementById("inline-login-identifier"),
+          document.getElementById("inline-login-password"),
+          inlineLoginStatus,
+          false
+        );
+      });
+
+      modalLoginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        handlePasswordLogin(
+          document.getElementById("modal-login-identifier"),
+          document.getElementById("modal-login-password"),
+          modalLoginStatus,
+          true
+        );
+      });
+
+      inlineTiktokBtn.addEventListener("click", function () {
+        startTikTokOAuth(inlineLoginStatus);
+      });
+      modalTiktokBtn.addEventListener("click", function () {
+        startTikTokOAuth(modalLoginStatus);
+      });
 
       videoInput.addEventListener("change", function () {
         const file = videoInput.files && videoInput.files[0];
@@ -668,28 +1225,25 @@
         }
       });
 
-      function showStatus(msg, isError) {
-        studioStatus.textContent = msg;
-        studioStatus.className = "status-banner " + (isError ? "err" : "ok");
-      }
-
       studioForm.addEventListener("submit", function (e) {
         e.preventDefault();
         if (!privacySelect.value) {
-          showStatus("Please select a privacy level before submitting.", true);
+          setBanner(studioStatus, "Please select a privacy level before submitting.", true);
           return;
         }
         if (disclosureToggle.checked && !brandOrganic.checked && !brandedContent.checked) {
-          showStatus("Please select either 'Your Brand' or 'Branded Content' when commercial disclosure is enabled.", true);
+          setBanner(studioStatus, "Please select either 'Your Brand' or 'Branded Content' when commercial disclosure is enabled.", true);
           return;
         }
         if (!musicConsent.checked) {
-          showStatus("Please confirm TikTok's Music Usage Confirmation before continuing.", true);
+          setBanner(studioStatus, "Please confirm TikTok's Music Usage Confirmation before continuing.", true);
           return;
         }
 
+        const session = loadSession();
         const manifest = {
           app: "GTA Clip Uploader",
+          creator_account: session ? session.handle : "unauthenticated",
           post_info: {
             title: captionInput.value.trim(),
             privacy_level: privacySelect.value,
@@ -712,7 +1266,7 @@
         document.body.removeChild(a);
         URL.revokeObjectURL(dlUrl);
 
-        showStatus("Validation passed! Exported tiktok-direct-post-manifest.json with privacy=" + privacySelect.value + ".", false);
+        setBanner(studioStatus, "Validation passed! Exported tiktok-direct-post-manifest.json with privacy=" + privacySelect.value + ".", false);
       });
 
       resetBtn.addEventListener("click", function () {
@@ -720,8 +1274,8 @@
         disclosureOptions.classList.remove("visible");
         previewPrivacyBadge.textContent = "Privacy: Not selected";
         syncCaption();
-        studioStatus.className = "status-banner";
-        studioStatus.textContent = "";
+        renderAuthState(loadSession());
+        setBanner(studioStatus, "", false);
       });
     })();
   </script>

@@ -154,6 +154,7 @@
         <div class="actions">
           <button id="copy-code-btn" type="button">Copy Code</button>
           <button id="copy-url-btn" class="secondary" type="button">Copy Full URL</button>
+          <a href="index.html#studio" style="padding: 11px 16px; border-radius: 8px; background: #262b3d; color: var(--text); text-decoration: none; font-weight: 700; font-size: 0.95rem;">Return to Publisher Studio</a>
           <span id="copy-status" class="status"></span>
         </div>
       </div>
@@ -180,6 +181,7 @@
     (function () {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
+      const state = params.get("state");
       const err = params.get("error");
       const errDesc = params.get("error_description");
 
@@ -199,6 +201,19 @@
         errorView.textContent = "No authorization code found yet. Please start the connection flow from GTA Clip Uploader.";
         errorView.classList.remove("hidden");
         return;
+      }
+
+      try {
+        const expectedState = sessionStorage.getItem("tiktok_oauth_state");
+        if (expectedState && state !== expectedState) {
+          errorView.textContent = "Authorization state mismatch. Please restart login from GTA Clip Uploader.";
+          errorView.classList.remove("hidden");
+          return;
+        }
+        sessionStorage.removeItem("tiktok_oauth_state");
+        sessionStorage.setItem("gta_tiktok_oauth_connected", "1");
+      } catch (storageErr) {
+        // Ignore storage restrictions.
       }
 
       codeDisplay.textContent = code;
