@@ -108,6 +108,9 @@
     button.secondary { background: #262b3d; color: var(--text); }
     button:hover { opacity: 0.92; }
     .status { font-size: 0.92rem; font-weight: 600; color: var(--ok); }
+    .ok-box { background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.45); color: #bbf7d0; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+    .ok-box strong { display: block; font-size: 1.05rem; margin-bottom: 6px; }
+    .ok-box p { margin: 0 0 14px; color: var(--muted); font-size: 0.92rem; }
     .error-box { background: rgba(248, 113, 113, 0.12); border: 1px solid var(--err); color: #fecaca; border-radius: 10px; padding: 16px; }
     .hidden { display: none; }
     footer.site-footer {
@@ -142,7 +145,16 @@
   <main class="container">
     <div class="panel">
       <h1>TikTok Account Authorization</h1>
-      <p class="sub">Complete your TikTok OAuth 2.0 connection by copying the authorization code or redirect URL below into GTA Clip Uploader.</p>
+      <p id="page-subtitle" class="sub">Complete your TikTok OAuth 2.0 connection by copying the authorization code or redirect URL below into GTA Clip Uploader.</p>
+
+      <div id="web-redirect-view" class="ok-box hidden" role="status">
+        <strong>TikTok account authorized!</strong>
+        <p id="web-redirect-msg">Redirecting you back to GTA Clip Uploader Publisher Studio...</p>
+        <div class="actions">
+          <a href="index.html#studio" style="padding: 11px 18px; border-radius: 8px; background: var(--accent); color: #0b0d14; text-decoration: none; font-weight: 700; font-size: 0.95rem;">Continue to Publisher Studio</a>
+          <button id="show-code-btn" class="secondary" type="button">Stay &amp; Show Authorization Code</button>
+        </div>
+      </div>
 
       <div id="success-view" class="hidden">
         <div class="label">Authorization Code</div>
@@ -185,6 +197,10 @@
       const err = params.get("error");
       const errDesc = params.get("error_description");
 
+      const pageSubtitle = document.getElementById("page-subtitle");
+      const webRedirectView = document.getElementById("web-redirect-view");
+      const webRedirectMsg = document.getElementById("web-redirect-msg");
+      const showCodeBtn = document.getElementById("show-code-btn");
       const successView = document.getElementById("success-view");
       const errorView = document.getElementById("error-view");
       const codeDisplay = document.getElementById("code-display");
@@ -203,6 +219,7 @@
         return;
       }
 
+      let fromWeb = false;
       try {
         const expectedState = sessionStorage.getItem("tiktok_oauth_state");
         if (expectedState && state !== expectedState) {
@@ -210,7 +227,9 @@
           errorView.classList.remove("hidden");
           return;
         }
+        fromWeb = sessionStorage.getItem("tiktok_oauth_from_web") === "1";
         sessionStorage.removeItem("tiktok_oauth_state");
+        sessionStorage.removeItem("tiktok_oauth_from_web");
         sessionStorage.setItem("gta_tiktok_oauth_connected", "1");
       } catch (storageErr) {
         // Ignore storage restrictions.
@@ -218,7 +237,22 @@
 
       codeDisplay.textContent = code;
       urlDisplay.textContent = window.location.href;
-      successView.classList.remove("hidden");
+
+      if (fromWeb) {
+        pageSubtitle.textContent = "Your TikTok OAuth 2.0 authorization succeeded.";
+        webRedirectView.classList.remove("hidden");
+        const timer = window.setTimeout(function () {
+          window.location.replace("index.html#studio");
+        }, 1400);
+
+        showCodeBtn.addEventListener("click", function () {
+          window.clearTimeout(timer);
+          webRedirectMsg.textContent = "Auto-redirect paused. You can copy the authorization details below or continue to Publisher Studio.";
+          successView.classList.remove("hidden");
+        });
+      } else {
+        successView.classList.remove("hidden");
+      }
 
       function copyText(text, label) {
         if (navigator.clipboard && navigator.clipboard.writeText) {

@@ -1108,6 +1108,7 @@
         const state = randomState();
         try {
           sessionStorage.setItem("tiktok_oauth_state", state);
+          sessionStorage.setItem("tiktok_oauth_from_web", "1");
         } catch (err) {
           // Ignore storage errors.
         }
